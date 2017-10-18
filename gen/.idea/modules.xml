@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/idea.gen.iml" filepath="$PROJECT_DIR$/idea.gen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/idea.gen_main.iml" filepath="$PROJECT_DIR$/.idea/modules/idea.gen_main.iml" group="idea.gen" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/idea.gen_test.iml" filepath="$PROJECT_DIR$/.idea/modules/idea.gen_test.iml" group="idea.gen" />
+    </modules>
+  </component>
+</project>
