@@ -4,7 +4,6 @@ import com.huajiao.jialiwei.gen.*;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
-import idea.gen.*;
 import com.huajiao.jialiwei.gen.android.AndroidAttributes;
 import com.huajiao.jialiwei.gen.android.AndroidUtils;
 import com.huajiao.jialiwei.gen.code.SourceGenerator;
