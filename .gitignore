@@ -23,3 +23,6 @@ hs_err_pid*
 .idea/
 settings.gradle
 LayoutEx.iml
+build/
+.gradle/
+*.swp
