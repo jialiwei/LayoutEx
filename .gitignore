@@ -26,3 +26,4 @@ LayoutEx.iml
 build/
 .gradle/
 *.swp
+out/

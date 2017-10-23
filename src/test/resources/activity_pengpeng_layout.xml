@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:id="@+id/layout_grouup"
+    android:layout_height="match_parent" gen:className="com.huajiao.layouex.Penpeng">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/pengpeng_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        fresco:placeholderImageScaleType="fitXY" />
+
+    <View
+        android:id="@+id/background_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/alpha70_black"
+        android:visibility="gone" />
+
+    <RelativeLayout style="@style/pengpeng_topbar_container">
+
+        <ImageView
+            android:id="@+id/pengpeng_fanhui"
+            style="@style/pengpeng_topbar_back" />
+
+        <RelativeLayout
+            android:id="@+id/pengpeng_message_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:id="@+id/pengpeng_message"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingRight="15dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/pengpeng_xiaoxi" />
+
+            <ImageView
+                android:id="@+id/pengpeng_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="37dp"
+                android:layout_toLeftOf="@+id/pengpeng_message"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/pengpeng_shaixuan" />
+
+            <View
+                android:id="@+id/red_point"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_alignRight="@id/pengpeng_message"
+                android:layout_alignTop="@id/pengpeng_message"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_pengpeng_point" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+    <com.huajiao.main.pengpeng.PengpengLoadingView
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/pengpeng_content_margin_top"
+        android:visibility="gone" />
+
+    <ViewStub
+        android:id="@+id/pengpeng_empty_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/pengpeng_empty_view"
+        android:visibility="gone" />
+
+
+    <ViewStub
+        android:id="@+id/pengpeng_error_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/pengpeng_content_margin_top"
+        android:layout="@layout/pengpeng_erroe_view"
+        android:visibility="gone" />
+
+
+    <ViewStub
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/pengpeng_erroe_view"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:id="@+id/operation_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="6dp"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/pengpeng_btn_bg" />
+
+                <ImageView
+                    android:id="@+id/pengpeng_not_like"
+                    android:layout_width="58dp"
+                    android:layout_height="58dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/pengpeng_dislike_selector" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="48dp">
+
+                <ImageView
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/pengpeng_btn_bg" />
+
+                <ImageView
+                    android:id="@+id/pengpeng_like"
+                    android:layout_width="58dp"
+                    android:layout_height="58dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/pengpeng_like_selector" />
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+        <com.huajiao.draft.DraftingView
+            android:id="@+id/draft_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+    </RelativeLayout>
+</RelativeLayout>
