@@ -3,6 +3,7 @@ package com.huajiao.layoutex.parse;
 import com.huajiao.layoutex.*;
 import com.huajiao.layoutex.android.AndroidAttributes;
 import com.huajiao.layoutex.android.AndroidUtils;
+import com.huajiao.layoutex.code.CodeConfig;
 import com.huajiao.layoutex.code.SourceGenerator;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
@@ -39,13 +40,13 @@ public class LayoutParser {
             Document document = documentBuilder.parse(layoutDoc);
             Element documentElement = document.getDocumentElement();
 
-            return parse(documentElement, null);
+            return parse(documentElement, null,layoutDoc.getName());
         } catch (Exception e) {
             throw new LayoutParseException("parse layout failed", e);
         }
     }
 
-    public List<GenClass> parse(Element element, GenClass parentClass) {
+    public List<GenClass> parse(Element element, GenClass parentClass,String layoutFileName) {
         String idName = element.getAttribute(AndroidAttributes.ATTRIBUTE_ID);
         idName = AndroidUtils.cleanId(idName);
         String customerClassName = element.getAttribute(CustomerAttributes.ATTRIBUTE_CLASS_NAME);
@@ -66,6 +67,7 @@ public class LayoutParser {
             GenClass genClass = new GenClass();
             genClass.setClassName(customerClassName);
             genClass.setSuperClassName(classNameParser.parseClassName(element.getTagName()));
+            genClass.setLayoutFileName(layoutFileName);
             result.add(0,genClass);
             parentClassForSubElement = genClass;
         }
@@ -75,7 +77,7 @@ public class LayoutParser {
             Node item = childNodes.item(i);
             if (item.getNodeType() != Node.ELEMENT_NODE) continue;
             Element childElement = (Element) item;
-            List<GenClass> childGenClasses = parse(childElement, parentClassForSubElement);
+            List<GenClass> childGenClasses = parse(childElement, parentClassForSubElement,null);
             result.addAll(0, childGenClasses);
         }
         return result;
@@ -93,7 +95,8 @@ public class LayoutParser {
             File outFile = new File("/home/jialiwei/sourceGen");
             for (GenClass genClass : genClasses) {
                 ClassName className = ClassName.bestGuess(genClass.getClassName());
-                TypeSpec typeSpec = sourceGenerator.generate(genClass);
+                CodeConfig codeConfig = new CodeConfig("com.huajiao");
+                TypeSpec typeSpec = sourceGenerator.generate(genClass,codeConfig);
                 JavaFile javaFile = JavaFile.builder(className.packageName(), typeSpec).build();
                 javaFile.writeTo(outFile);
             }

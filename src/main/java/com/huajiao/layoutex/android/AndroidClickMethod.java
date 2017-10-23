@@ -7,6 +7,7 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.huajiao.layoutex.DefaultFieldNameConvert;
 import com.huajiao.layoutex.GenField;
+import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
 import java.util.List;
@@ -25,7 +26,7 @@ public class AndroidClickMethod {
 
     private FieldNameConvertor fieldNameConvertor = new DefaultFieldNameConvert();
 
-    public MethodSpec getClickMethod(GenClass genClass) {
+    public ClickSpec getClickMethod(GenClass genClass) {
         if (genClass == null ) return null;
         List<GenField> genFields = genClass.clickAbleFields();
         if (genFields == null ||genFields.size() == 0) return null;
@@ -37,12 +38,67 @@ public class AndroidClickMethod {
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(parameterSpec);
         builder.beginControlFlow("switch(v.getId())");
+
+
+//        ClassName listenerClassName = ClassName.bestGuess(genClass.getClassName() + ".Listener");
+//
+        ClassName className = ClassName.bestGuess(genClass.getClassName());
+
+        ClassName listenerClassName = ClassName.get(className.packageName(), className.simpleName(), "Listener");
+        TypeSpec.Builder listenerBuilder = TypeSpec.interfaceBuilder(listenerClassName)
+                .addModifiers(Modifier.PUBLIC);
+
+
+
         for (GenField genField : genFields) {
             String viewId = genField.getViewId();
             String methodIdName = fieldNameConvertor.convert(viewId);
+            char[] chars = methodIdName.toCharArray();
+            chars[0] = Character.toUpperCase(chars[0]);
+            methodIdName = new String(chars);
             builder.addStatement(String.format(CASE_TEMPLATE,viewId,methodIdName));
+
+            MethodSpec.Builder clickMethodBuilder = MethodSpec.methodBuilder("on" + methodIdName + "Click");
+            clickMethodBuilder.addModifiers(Modifier.PUBLIC);
+            clickMethodBuilder.addModifiers(Modifier.ABSTRACT);
+            ParameterSpec clickViewParameterSpec = ParameterSpec.builder(viewClass, "v").build();
+            clickMethodBuilder.addParameter(clickViewParameterSpec);
+            listenerBuilder.addMethod(clickMethodBuilder.build());
         }
         builder.endControlFlow();
-        return builder.build();
+        MethodSpec clickMethodSpec = builder.build();
+        TypeSpec listenerSpec = listenerBuilder.build();
+        ClickSpec clickSpec = new ClickSpec(clickMethodSpec,listenerSpec);
+        return clickSpec;
     }
+
+    public static class ClickSpec{
+        private MethodSpec clickMethodSpec;
+        private TypeSpec listenerSpec;
+
+        public ClickSpec(MethodSpec clickMethodSpec, TypeSpec listenerSpec) {
+            this.clickMethodSpec = clickMethodSpec;
+            this.listenerSpec = listenerSpec;
+        }
+
+        public MethodSpec getClickMethodSpec() {
+            return clickMethodSpec;
+        }
+
+        public void setClickMethodSpec(MethodSpec clickMethodSpec) {
+            this.clickMethodSpec = clickMethodSpec;
+        }
+
+        public TypeSpec getListenerSpec() {
+            return listenerSpec;
+        }
+
+        public void setListenerSpec(TypeSpec listenerSpec) {
+            this.listenerSpec = listenerSpec;
+        }
+    }
+
+
+
+
 }

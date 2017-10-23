@@ -9,6 +9,7 @@ public class GenClass {
     private String superClassName;
 
     private List<GenField> fields = new ArrayList<GenField>();
+    private String layoutFileName;
 
 
     public void appendField(GenField genField) {
@@ -54,5 +55,13 @@ public class GenClass {
             }
         }
         return result;
+    }
+
+    public String getLayoutFileName() {
+        return layoutFileName;
+    }
+
+    public void setLayoutFileName(String layoutFileName) {
+        this.layoutFileName = layoutFileName;
     }
 }

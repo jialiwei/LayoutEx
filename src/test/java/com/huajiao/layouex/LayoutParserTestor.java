@@ -22,4 +22,5 @@ public class LayoutParserTestor {
         List<GenClass> genClasses = layoutParser.parseLayout(file);
         Assert.assertEquals(1,genClasses.size());
     }
+
 }

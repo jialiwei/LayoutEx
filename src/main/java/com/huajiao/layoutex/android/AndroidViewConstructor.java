@@ -37,7 +37,7 @@ public class AndroidViewConstructor {
         ParameterSpec styleSetParam = ParameterSpec
                 .builder(ClassName.INT, DEFSTYLEATTR_PARAMETER_NAME).build();
         MethodSpec.Builder builder = MethodSpec.constructorBuilder();
-        builder.addAnnotation(Override.class);
+//        builder.addAnnotation(Override.class);
         builder.addModifiers(Modifier.PUBLIC);
         if (type == CONTEXT_CONSTRICTOR) {
             return builder.addParameter(contextParam).addStatement(CONSTRUCTOR_CONTEXT_BODY).addStatement(INIT_STATE).build();

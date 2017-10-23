@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SourceGenerator {
 
-    public TypeSpec generate(GenClass genClass) {
+    public TypeSpec generate(GenClass genClass,CodeConfig config) {
 
         AndroidViewConstructor androidViewConstructor = new AndroidViewConstructor();
         List<MethodSpec> constructors = new ArrayList<>();
@@ -28,26 +28,39 @@ public class SourceGenerator {
             superType = ClassName.bestGuess(superClassName);
         }
 
-        AndroidInitMethod androidInitMethod = new AndroidInitMethod(genClass.getFields());
-        MethodSpec initMethod = androidInitMethod.getInitMethod();
+
+        ClassName className = ClassName.bestGuess(genClass.getClassName());
+        TypeSpec.Builder builder = TypeSpec.classBuilder(className)
+                .addModifiers(Modifier.PUBLIC)
+                .superclass(superType)
+                .addMethods(constructors);
+
+
+
+        AndroidInitMethod androidInitMethod = new AndroidInitMethod();
+        MethodSpec initMethod = androidInitMethod.getInitMethod(genClass,config);
+        builder.addMethod(initMethod);
 
         AndroidField androidField = new AndroidField();
         List<FieldSpec> fieldSpecList = androidField.generateFieldSpec(genClass);
+        builder.addFields(fieldSpecList);
 
-        ClassName className = ClassName.bestGuess(genClass.getClassName());
-        TypeSpec.Builder builder= TypeSpec.classBuilder(className)
-                .addModifiers(Modifier.PUBLIC)
-                .superclass(superType)
-                .addMethods(constructors)
-                .addMethod(initMethod)
-                .addFields(fieldSpecList);
 
         AndroidClickMethod clickMethod = new AndroidClickMethod();
-        MethodSpec clickMethodSpec = clickMethod.getClickMethod(genClass);
+        AndroidClickMethod.ClickSpec clickSpec = clickMethod.getClickMethod(genClass);
+        MethodSpec clickMethodSpec =  clickSpec.getClickMethodSpec();
         if (clickMethodSpec != null) {
             ClassName onClick = ClassName.bestGuess(AndroidConstants.ANDROID_VIEW_ONCLICK);
             builder.addSuperinterface(onClick);
             builder.addMethod(clickMethodSpec);
+
+            TypeSpec listenerSpec = clickSpec.getListenerSpec();
+            builder.addType(listenerSpec);
+
+            ClassName listenerClassName = ClassName.bestGuess(listenerSpec.name);
+
+            FieldSpec listenerField = FieldSpec.builder(listenerClassName, AndroidClickMethod.LISTENER_NAME, Modifier.PRIVATE).build();
+            builder.addField(listenerField);
         }
         return builder.build();
     }
