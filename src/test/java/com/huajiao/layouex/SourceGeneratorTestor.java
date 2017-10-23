@@ -33,22 +33,9 @@ public class SourceGeneratorTestor {
         File outDir = new File("/home/jialiwei/projects/github/LayoutEx/src/test/resources/out");
         CodeConfig codeConfig = new CodeConfig("com.huajiao");
 
-
-
-
-
-
         for (GenClass genClass : genClasses) {
             ClassName className = ClassName.bestGuess(genClass.getClassName());
             TypeSpec typeSpec = sg.generate(genClass,codeConfig);
-
-
-
-//            AndroidClickMethod clickMethod = new AndroidClickMethod();
-//            AndroidClickMethod.ClickSpec clickSpec = clickMethod.getClickMethod(genClass);
-//            MethodSpec clickMethodSpec =  clickSpec.getClickMethodSpec();
-//            TypeSpec listenerSpec = clickSpec.getListenerSpec();
-
             JavaFile javaFile = JavaFile.builder(className.packageName(), typeSpec).build();
             javaFile.writeTo(outDir);
         }
