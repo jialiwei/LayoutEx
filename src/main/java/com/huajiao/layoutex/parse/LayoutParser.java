@@ -1,6 +1,5 @@
 package com.huajiao.layoutex.parse;
 
-import com.huajiao.jialiwei.gen.*;
 import com.huajiao.layoutex.*;
 import com.huajiao.layoutex.android.AndroidAttributes;
 import com.huajiao.layoutex.android.AndroidUtils;
