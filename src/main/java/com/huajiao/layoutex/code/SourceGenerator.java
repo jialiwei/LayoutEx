@@ -1,7 +1,6 @@
 package com.huajiao.layoutex.code;
 
 import com.huajiao.layoutex.GenClass;
-import com.huajiao.jialiwei.gen.android.*;
 import com.huajiao.layoutex.android.*;
 import com.huajiao.layoutex.util.StringUtils;
 import com.squareup.javapoet.*;
